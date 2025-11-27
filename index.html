@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberToDo - Neon Task Manager</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Firebase Config (must be loaded first) -->
+    <script src="firebase-config.js"></script>
+    
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        
+        // Your web app's Firebase configuration
+        // Replace with your Firebase config from firebase-config.js
+        const firebaseConfig = window.firebaseConfig || {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        window.firebaseAuth = getAuth(app);
+        window.firebaseDb = getFirestore(app);
+    </script>
+</head>
+<body>
+    <!-- Auth Modal -->
+    <div class="auth-modal" id="authModal">
+        <div class="auth-container">
+            <div class="auth-header">
+                <h2 class="auth-title">CYBER ACCESS</h2>
+                <button class="close-auth" id="closeAuth">&times;</button>
+            </div>
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">LOGIN</button>
+                <button class="auth-tab" data-tab="signup">SIGN UP</button>
+            </div>
+            <div class="auth-content">
+                <div class="auth-form" id="loginForm">
+                    <input type="email" id="loginEmail" class="cyber-input" placeholder="Email" required>
+                    <input type="password" id="loginPassword" class="cyber-input" placeholder="Password" required>
+                    <button class="cyber-button" id="loginBtn">LOGIN</button>
+                    <div class="auth-error" id="loginError"></div>
+                </div>
+                <div class="auth-form" id="signupForm" style="display: none;">
+                    <input type="text" id="signupName" class="cyber-input" placeholder="Display Name" required>
+                    <input type="email" id="signupEmail" class="cyber-input" placeholder="Email" required>
+                    <input type="password" id="signupPassword" class="cyber-input" placeholder="Password (min 6 chars)" required>
+                    <button class="cyber-button" id="signupBtn">CREATE ACCOUNT</button>
+                    <div class="auth-error" id="signupError"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Info Bar -->
+    <div class="user-bar" id="userBar" style="display: none;">
+        <div class="user-info">
+            <span class="user-name" id="userName"></span>
+            <button class="cyber-button-small" id="logoutBtn">LOGOUT</button>
+        </div>
+    </div>
+
+    <div class="cyber-container">
+        <div class="glitch-wrapper">
+            <h1 class="glitch" data-text="CYBERTODO">CYBERTODO</h1>
+        </div>
+
+        <!-- Notebooks Tabs -->
+        <div class="notebooks-section" id="notebooksSection" style="display: none;">
+            <div class="notebooks-header">
+                <h3 class="section-title">NOTEBOOKS</h3>
+                <button class="cyber-button-small" id="addNotebookBtn">+ NEW</button>
+            </div>
+            <div class="notebooks-tabs" id="notebooksTabs">
+                <!-- Notebook tabs will be added here -->
+            </div>
+        </div>
+        
+        <div class="input-section" id="inputSection" style="display: none;">
+            <div class="input-wrapper">
+                <input 
+                    type="text" 
+                    id="todoInput" 
+                    placeholder="Enter new task..."
+                    class="cyber-input"
+                >
+                <button id="addBtn" class="cyber-button">
+                    <span class="button-text">ADD</span>
+                    <span class="button-glow"></span>
+                </button>
+            </div>
+        </div>
+
+        <div class="todo-list" id="todoList">
+            <!-- ToDo items will be added here dynamically -->
+        </div>
+
+        <div class="stats" id="stats" style="display: none;">
+            <div class="stat-item">
+                <span class="stat-label">TOTAL</span>
+                <span class="stat-value" id="totalCount">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">ACTIVE</span>
+                <span class="stat-value" id="activeCount">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">COMPLETED</span>
+                <span class="stat-value" id="completedCount">0</span>
+            </div>
+        </div>
+
+        <!-- Welcome Message (when not logged in) -->
+        <div class="welcome-message" id="welcomeMessage">
+            <h2>Welcome to CyberToDo</h2>
+            <p>Create an account to start organizing your tasks into notebooks</p>
+            <button class="cyber-button" id="showAuthBtn">GET STARTED</button>
+        </div>
+    </div>
+
+    <!-- Lightning effect overlay -->
+    <div class="lightning-overlay" id="lightningOverlay"></div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
+
